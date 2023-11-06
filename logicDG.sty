@@ -1,0 +1,138 @@
+%%Identification
+%%The package identifies itself and the LaTeX version needed
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{logicDG}[2023/04/16 Logic package]
+
+
+%% Required packages and preliminary definitions
+\RequirePackage{mathtools}
+\RequirePackage{xcolor}
+\RequirePackage{nicematrix}
+\RequirePackage[most]{tcolorbox}
+\RequirePackage{pgffor}
+\RequirePackage{longtable}
+\definecolor{bgproof}{HTML}{ede9e6}
+\definecolor{titleproof}{HTML}{cfcfcf}
+\definecolor{subproofm}{HTML}{000000}
+
+%% options passed to the package
+\DeclareOption*{\PackageWarning{logicDG}{Unknown ‘\CurrentOption’}}
+\ProcessOptions\relax
+
+%% Body of the package
+
+
+\tcbset{demo/.style={
+    enhanced, title=title,
+    attach boxed title to top
+    left = {xshift = .6pt, yshift = -\tcboxedtitleheight -.7pt},
+    top = 1pt,
+    boxrule = .65pt,
+    coltitle = black,
+    colback = bgproof,
+    colframe = bgproof,
+    breakable,
+    arc = 0mm,
+    outer arc = 0mm,
+    boxed title style={
+        colback = white,
+        colframe = titleproof,
+        boxrule = .5pt,
+        arc = 0mm,
+        outer arc = 0mm
+    }
+}}
+
+
+
+
+\NewDocumentCommand\To{}{\Rightarrow}
+
+\NewDocumentCommand\Gets{}{\Leftarrow}
+
+\NewDocumentCommand\sthat{}{\,\left|\right.\,}
+
+\NewDocumentCommand\sat{}{\,:\,}
+
+\NewDocumentCommand\why{s O{\equiv}m}%
+{
+  \IfBooleanTF #1
+  {#2}
+  {#2 & \quad\left\langle\;\text{{#3}}\;\right\rangle}
+}
+
+\NewDocumentCommand\res{m}%
+  	{ & \displaystyle#1}
+
+\NewDocumentCommand\theo{O{}mm}%
+  { #1 \vdash_{\text{#2}} #3 }
+
+
+\newlength{\pbox}
+\setlength{\pbox}{.1cm}
+
+
+\NewDocumentEnvironment{proofbox}{s O{5} m}
+{
+  \IfBooleanTF{#1}
+  {
+    \begin{tcolorbox}[demo, title={#3}, colframe=subproofm]
+    \vspace{#2\pbox}
+  }
+  {
+    \begin{tcolorbox}[demo, title={#3}]
+    \vspace{#2\pbox}
+  }
+}{
+  \IfBooleanTF{#1}
+  {
+    \end{tcolorbox}
+  }
+  {
+    \end{tcolorbox}
+  }
+}
+
+
+
+\NewDocumentEnvironment{derivation}{D<>{1.2} O{0pt}}{
+  % begin
+  \RenewDocumentCommand{\arraystretch}{}{#1}
+  \setlength{\arraycolsep}{#2}
+  \begin{matrix*}[l]
+}{
+  % end
+  \end{matrix*}
+}
+\newcolumntype{L}{>{$}l<{$}}
+
+\NewDocumentEnvironment{longderivation}{D<>{1.2} O{0pt}}{
+  % begin
+  \RenewDocumentCommand{\arraystretch}{}{#1}
+  \setlength{\tabcolsep}{#2}
+  \begin{longtable}{LL}
+}{
+  % end
+  \end{longtable}
+}
+
+\newcounter{row}
+\newcommand{\contspf}{0}
+
+\newlength{\twocolC}
+\setlength{\twocolC}{3pt}
+
+
+\NewDocumentEnvironment{twocol}{D<>{1.2} D(){3pt} O{0}}{
+  % begin
+  \setcounter{row}{\number\numexpr#3 - 1\relax}
+  \RenewDocumentCommand{\arraystretch}{}{#1}
+  \setlength{\tabcolsep}{#2}
+  \begin{tabular}{>{\stepcounter{row}\therow.\hspace{\twocolC}} >{$}l<{$} l }
+}{
+  %end
+  \end{tabular}
+}
+
+
+
