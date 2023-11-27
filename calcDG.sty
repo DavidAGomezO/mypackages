@@ -33,16 +33,16 @@
 }
 
 \ExplSyntaxOn
-\NewDocumentEnvironment{sisEq}{ D[]{[,]} }%
+\NewDocumentEnvironment{siseq}{ D[]{[,]} }%
 {
     \clist_set:Nn \l_tma_clist{ #1 }
     \tl_set:Nn \l_left_tl {\clist_item:Nn \l_tma_clist{1}}
     \tl_set:Nn \l_right_tl {\clist_item:Nn \l_tma_clist{2}}
 
     \left\l_left_tl
-    \begin{aligned}
+    \begin{matrix}
 }{
-    \end{aligned}
+    \end{matrix}
     \right\l_right_tl
 }
 
