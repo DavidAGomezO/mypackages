@@ -13,6 +13,8 @@
 
 %% Body of the package
 
+\NewDocumentCommand\ds{}{\displaystyle}
+
 \NewDocumentCommand\size{m}%
 {
     \left| #1 \right|
@@ -57,6 +59,6 @@
 }
 \ExplSyntaxOff
 
-\NewDocumentCommand \diff { O{x} }{ \mathrm{d} #1 }
+\NewDocumentCommand \diff { m }{ \mathrm{d} #1 }
 
 

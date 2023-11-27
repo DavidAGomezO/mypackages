@@ -11,9 +11,12 @@
 \RequirePackage[most]{tcolorbox}
 \RequirePackage{pgffor}
 \RequirePackage{longtable}
-\definecolor{bgproof}{HTML}{ede9e6}
-\definecolor{titleproof}{HTML}{cfcfcf}
-\definecolor{subproofm}{HTML}{000000}
+\definecolor{bgtitleproof}{RGB}{255,255,255}
+\definecolor{bgproof}{RGB}{237,233,230}
+\definecolor{titleproof}{RGB}{207,207,207}
+\definecolor{subproofm}{RGB}{0,0,0}
+\definecolor{fontproof}{RGB}{0,0,0}
+\definecolor{fontprooft}{RGB}{0,0,0}
 
 %% options passed to the package
 \DeclareOption*{\PackageWarning{logicDG}{Unknown ‘\CurrentOption’}}
@@ -23,24 +26,25 @@
 
 
 \tcbset{demo/.style={
-    enhanced, title=title,
-    attach boxed title to top
-    left = {xshift = .6pt, yshift = -\tcboxedtitleheight -.7pt},
-    top = 1pt,
-    boxrule = .65pt,
-    coltitle = black,
-    colback = bgproof,
-    colframe = bgproof,
-    breakable,
-    arc = 0mm,
-    outer arc = 0mm,
-    boxed title style={
-        colback = white,
-        colframe = titleproof,
-        boxrule = .5pt,
-        arc = 0mm,
-        outer arc = 0mm
-    }
+  coltext = fontproof,
+  enhanced, title=title,
+  attach boxed title to top
+  left = {xshift = .6pt, yshift = -\tcboxedtitleheight -.7pt},
+  top = 1pt,
+  boxrule = .65pt,
+  coltitle=fontprooft,
+  colback = bgproof,
+  colframe = bgproof,
+  breakable,
+  arc = 0mm,
+  outer arc = 0mm,
+  boxed title style={
+      colback = bgtitleproof,
+      colframe = titleproof,
+      boxrule = .5pt,
+      arc = 0mm,
+      outer arc = 0mm
+  }
 }}
 
 
@@ -50,9 +54,19 @@
 
 \NewDocumentCommand\Gets{}{\Leftarrow}
 
-\NewDocumentCommand\sthat{}{\,\left|\right.\,}
+\ExplSyntaxOn
+\NewDocumentCommand\Forall{m O{} m}{
+    \tl_if_blank:nTF {#2}
+    {\left(\forall #1 \,\left|:\, #3 \right.\right)}
+    {\left(\forall #1 \,\left|\, #2 \,:\, #3\right.\right)}
+}
 
-\NewDocumentCommand\sat{}{\,:\,}
+\NewDocumentCommand\Exists{m O{} m}{
+    \tl_if_blank:nTF {#2}
+    {\left(\exists #1 \,\left|:\, #3 \right.\right)}
+    {\left(\exists #1 \,\left|\, #2 \,:\, #3\right.\right)}
+}
+\ExplSyntaxOff
 
 \NewDocumentCommand\why{s O{\equiv}m}%
 {
@@ -76,11 +90,16 @@
 {
   \IfBooleanTF{#1}
   {
-    \begin{tcolorbox}[demo, title={#3}, colframe=subproofm]
+    \begin{tcolorbox}[
+      demo,
+      title={#3},
+      colframe=subproofm]
     \vspace{#2\pbox}
   }
   {
-    \begin{tcolorbox}[demo, title={#3}]
+    \begin{tcolorbox}[
+      demo,
+      title={#3}]
     \vspace{#2\pbox}
   }
 }{
